@@ -1,0 +1,31 @@
+import discord
+from discord.ext import commands
+import os
+from random import choice
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='$', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def mem(ctx):
+    lst = choice(os.listdir('images'))
+    with open(f'images/{lst}', 'rb') as f:
+        # В переменную кладем файл, который преобразуется в файл библиотеки Discord!
+        picture = discord.File(f)
+   # Можем передавать файл как параметр!
+    await ctx.send(file=picture)
+
+@bot.command()
+async def mewing(ctx):
+    lst = choice(os.listdir('text'))
+    with open(f'text/{lst}', 'rb') as f:
+        await ctx.send(file=discord.File(f, lst))
+        
+
+bot.run('')
